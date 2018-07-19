@@ -64,6 +64,19 @@ static void wait (int count)
     asm volatile ("" : : "r" (i) : "memory");
 }
 
+void
+wait_button (void)
+{
+#if defined(GPIO_BUTTON_PIN)
+ while (GPIO_OTHER->IDR & (1 << GPIO_BUTTON_PIN))
+   {
+     set_led(1);
+     wait(1000000);
+     set_led(0);
+     wait(1000000);
+   }
+#endif
+}
 
 static void
 usb_lld_sys_shutdown (void)
